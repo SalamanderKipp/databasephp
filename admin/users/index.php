@@ -16,13 +16,8 @@
             $liqry->bind_result($adminId,$email);
             if($liqry->execute()){
                 $liqry->store_result();
-                // while($liqry->fetch()) {
-                //     echo 'admin id :' . $adminId . " - ";
-                //     echo 'email :' . $email . " - ";
-                //     echo '<a href="edit_user.php?uid='.$adminId.'">edit</a><br>';
-                // }
 
-                // table>tr*1>td*4
+                
                 echo '<table border=1>
                         <tr>
                             <td>admin uid</td>

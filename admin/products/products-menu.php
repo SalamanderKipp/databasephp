@@ -5,6 +5,6 @@
 
 Admin-usersmenu:
 <ul>
-<li><a href="index.php">overzicht van gebruikers</a></li>
-<li><a href="add_user.php">gebruiker toevoegen</a></li>
+<li><a href="index.php">overzicht van producten</a></li>
+<li><a href="add_user.php">product toevoegen</a></li>
 </ul>
