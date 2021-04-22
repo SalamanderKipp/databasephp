@@ -4,7 +4,8 @@
     include('../core/header.php');
     include('../core/checklogin_admin.php');
 ?>
-sssssssssss
+
+<h1>Category verwijderen</h1>
 
 <?php
 //prettyDump($_POST);
@@ -12,52 +13,59 @@ sssssssssss
         //default user: test@test.nl
         //default password: test123
         $uid = $con->real_escape_string($_POST['uid']);
-        $email = $con->real_escape_string($_POST['email']);
-        $query1 = $con->prepare("UPDATE admin_user SET email = ? WHERE admin_user_id = ? LIMIT 1;");
+        $query1 = $con->prepare("DELETE FROM category WHERE category_id = ? LIMIT 1;");
         if ($query1 === false) {
             echo mysqli_error($con);
         }
                     
-        $query1->bind_param('si',$email,$uid);
+        $query1->bind_param('i',$uid);
         if ($query1->execute() === false) {
             echo mysqli_error($con);
         } else {
-            echo '<div style="border: 2px solid red">Gebruiker aangepast</div>';
+            echo '<div style="border: 2px solid red">Gebruiker met category_id '.$uid.' verwijderd!</div>';
         }
         $query1->close();
                     
     }
 ?>
 
-<h1>Gebruiker bewerken</h1>
 
-
-<form action="" method="POST">
 <?php
     if (isset($_GET['uid']) && $_GET['uid'] != '') {
+
+        ?>
+        <form action="<?php echo $_SERVER['PHP_SELF'];?>" method="POST">
+
+        <h2 style="color: red">weet je zeker dat je deze category wilt verwijderen?</h2><?php
+
         $uid = $con->real_escape_string($_GET['uid']);
 
-        $liqry = $con->prepare("SELECT admin_user_id,email FROM admin_user WHERE admin_user_id = ? LIMIT 1;");
+        $liqry = $con->prepare("SELECT category_id, name, description, active FROM category WHERE category_id = ? LIMIT 1;");
         if($liqry === false) {
            echo mysqli_error($con);
         } else{
             $liqry->bind_param('i',$uid);
-            $liqry->bind_result($adminId,$email);
+            $liqry->bind_result($category_id,$name,$description,$active);
             if($liqry->execute()){
                 $liqry->store_result();
                 $liqry->fetch();
                 if($liqry->num_rows == '1'){
-                    echo '$adminId: <input type="text" name="uid" value="' . $adminId . '" readonly><br>';
-                    echo '$email: <input type="text" name="email" value="' . $email . '"><br>';
+                    echo '$category_id: ' . $category_id . '<br>';
+                    echo '<input type="hidden" name="uid" value="' . $adminId . '" />';
+                    echo '$email: ' . $email . '<br>';
                 }
             }
         }
         $liqry->close();
 
+        ?>
+        <br>
+        <input type="submit" name="submit" value="Ja, verwijderen!">
+        </form>
+        <?php
+
     }
 ?>
-<input type="submit" name="submit" value="Opslaan">
-</form>
 
 <?php
     include('../core/footer.php');

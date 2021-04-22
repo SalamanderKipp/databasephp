@@ -13,8 +13,7 @@ include('products-menu.php');
 if (isset($_POST['submit']) && $_POST['submit'] != '') {
     //default user: test@test.nl
     //default password: test123
-    // echo $_POST['id'];
-    $id = $con->real_escape_string($_GET['uid']);
+    $id = $con->real_escape_string($_POST['id']);
     $name = $con->real_escape_string($_POST['name']);
     $description = $con->real_escape_string($_POST['description']);
     $category_id = $con->real_escape_string($_POST['category_id']);
@@ -22,7 +21,7 @@ if (isset($_POST['submit']) && $_POST['submit'] != '') {
     $color = $con->real_escape_string($_POST['color']);
     $weight = $con->real_escape_string($_POST['weight']);
     $active = $con->real_escape_string($_POST['active']);
-    $query1 = $con->prepare("UPDATE product SET name = ?, description = ?, category_id = ?, price = ?, color = ?, weight = ?, active = ? WHERE product_id = ? LIMIT 1;");
+    $query1 = $con->prepare("UPDATE product SET name = ?, description = ?, price = ?, category_id = ?, color = ?, weight = ?, active = ? WHERE product_id = ? LIMIT 1;");
     if ($query1 === false) {
         echo mysqli_error($con);
     }
@@ -38,26 +37,27 @@ if (isset($_POST['submit']) && $_POST['submit'] != '') {
 ?>
 
 
+
 <form action="" method="POST">
     <?php
     
     if (isset($_GET['uid']) && $_GET['uid'] != '') {
         $id = $con->real_escape_string($_GET['uid']);
         
-        $liqry = $con->prepare("SELECT `product_id`, `p`.`name`, `p`.`description`, c.`name`, c.`category_id`, `price`, `color`, `weight`, `p`.`active` FROM `product` as `p`,`category` as `c` WHERE `c`.`category_id`=`p`.`category_id` and p.`product_id` = ? LIMIT 1;");
+        $liqry = $con->prepare("SELECT `product_id`, `p`.`name`, `p`.`description`, c.`name`, `price`, `color`, `weight`, `p`.`active` FROM `product` as `p`,`category` as `c` WHERE `c`.`category_id`=`p`.`category_id` and p.`product_id` = ? LIMIT 1;");
         if ($liqry === false) {
             echo mysqli_error($con);
            
         } else {
             $liqry->bind_param('i', $id);
-            $liqry->bind_result($id, $name, $description, $category, $product_category_id, $price, $color, $weight, $active);
+            $liqry->bind_result($id, $name, $description, $category, $price, $color, $weight, $active);
             
             if ($liqry->execute()) {
                 $liqry->store_result();
                 $liqry->fetch();
                 
                 if ($liqry->num_rows == '1') {
-                    $columns = array('id', 'name', 'description', 'price', 'color', 'weight', 'active');
+                    $columns = array('id', 'name', 'description', 'category', 'price', 'color', 'weight', 'active');
                     foreach ($columns as $key) {
                         $dit_veld_moet_alleen_lezen_zijn = "";
                         if ($key == 'id') {
@@ -65,26 +65,6 @@ if (isset($_POST['submit']) && $_POST['submit'] != '') {
                         }
                         echo '<b>' . $key . '</b> :<input type="text" name="' . $key . '" value="' . $$key . '" ' . $dit_veld_moet_alleen_lezen_zijn . '><br>';
                     }
-                    $categoryqry = $con->prepare("SELECT `category_id`, `name` FROM `category`;");
-                    $categoryqry->bind_result($category_id, $name);
-            
-                    if ($categoryqry->execute()) {
-                        $categoryqry->store_result();
-
-                        echo '<b>catgory</b> :<select name="category_id" value="' . $product_category_id . '">';
-                        while ($categoryqry->fetch()) {
-                            $selected = "";
-                            if ($category_id == $product_category_id) {
-                                $selected = "selected";
-                            }
-                            
-                            ?>
-                            <option value="<?php echo $category_id; ?>" <?php echo $selected ?>><?php echo $name; ?></option>
-                        <?php
-                        }
-                        echo '</select>';
-                    }
-                    
                 }
             }
         }

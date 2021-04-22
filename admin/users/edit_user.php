@@ -3,6 +3,7 @@
 // onderstaand bestand wordt ingeladen
 include('../core/header.php');
 include('../core/checklogin_admin.php');
+include('users-menu.php');
 ?>
 
 <h1>Gebruiker bewerken</h1>
@@ -23,7 +24,7 @@ if (isset($_POST['submit']) && $_POST['submit'] != '') {
     if ($query1->execute() === false) {
         echo mysqli_error($con);
     } else {
-        echo '<div style="border: 2px solid red">Gebruiker aangepast</div>';
+        echo '<div style="border: 2px solid green">Gebruiker aangepast</div>';
     }
     $query1->close();
 }
@@ -35,10 +36,11 @@ if (isset($_POST['submit']) && $_POST['submit'] != '') {
     <?php
     if (isset($_GET['uid']) && $_GET['uid'] != '') {
         $uid = $con->real_escape_string($_GET['uid']);
-
+        
         $liqry = $con->prepare("SELECT admin_user_id,email FROM admin_user WHERE admin_user_id = ? LIMIT 1;");
         if ($liqry === false) {
             echo mysqli_error($con);
+            
         } else {
             $liqry->bind_param('i', $uid);
             $liqry->bind_result($adminId, $email);

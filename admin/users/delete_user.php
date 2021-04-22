@@ -3,6 +3,7 @@
     // onderstaand bestand wordt ingeladen
     include('../core/header.php');
     include('../core/checklogin_admin.php');
+    include('users-menu.php');
 ?>
 
 <h1>Gebruiker verwijderen</h1>

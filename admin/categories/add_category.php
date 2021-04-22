@@ -5,11 +5,13 @@
     include('../core/checklogin_admin.php');
 ?>
 
+<h1>Category toevoegen</h1>
+
 <?php
     if (isset($_POST['email']) && $_POST['email'] != "") {
         $email = $con->real_escape_string($_POST['email']);
 
-        $liqry = $con->prepare("INSERT INTO admin_user (email) VALUES (?)");
+        $liqry = $con->prepare("INSERT INTO product (email) VALUES (?)");
         if($liqry === false) {
            echo mysqli_error($con);
         } else{
@@ -24,8 +26,8 @@
 ?>
 
 <form action="" method="POST">
-email: <input type="text" name="email" value=""><br>
-<input type="submit" name="submit" value="Opslaan">
+email: <input type="text" name="email" value=""><br><br>
+<input type="submit" name="submit" value="Toevoegen">
 </form>
 
 
