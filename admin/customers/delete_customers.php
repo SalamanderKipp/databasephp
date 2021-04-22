@@ -3,10 +3,10 @@
     // onderstaand bestand wordt ingeladen
     include('../core/header.php');
     include('../core/checklogin_admin.php');
-    include('category-menu.php');
+    include('customers-menu.php');
 ?>
 
-<h1>Category verwijderen</h1>
+<h1>Gebruiker verwijderen</h1>
 
 <?php
 //prettyDump($_POST);
@@ -14,7 +14,7 @@
         //default user: test@test.nl
         //default password: test123
         $uid = $con->real_escape_string($_POST['uid']);
-        $query1 = $con->prepare("DELETE FROM category WHERE category_id = ? LIMIT 1;");
+        $query1 = $con->prepare("DELETE FROM admin_user WHERE admin_user_id = ? LIMIT 1;");
         if ($query1 === false) {
             echo mysqli_error($con);
         }
@@ -23,7 +23,7 @@
         if ($query1->execute() === false) {
             echo mysqli_error($con);
         } else {
-            echo '<div style="border: 2px solid red">Gebruiker met category_id '.$uid.' verwijderd!</div>';
+            echo '<div style="border: 2px solid red">Gebruiker met admin_user_id '.$uid.' verwijderd!</div>';
         }
         $query1->close();
                     
@@ -37,23 +37,23 @@
         ?>
         <form action="<?php echo $_SERVER['PHP_SELF'];?>" method="POST">
 
-        <h2 style="color: red">weet je zeker dat je deze category wilt verwijderen?</h2><?php
+        <h2 style="color: red">weet je zeker dat je deze gebruiker wilt verwijderen?</h2><?php
 
         $uid = $con->real_escape_string($_GET['uid']);
 
-        $liqry = $con->prepare("SELECT category_id, name, description, active FROM category WHERE category_id = ? LIMIT 1;");
+        $liqry = $con->prepare("SELECT admin_user_id,email FROM admin_user WHERE admin_user_id = ? LIMIT 1;");
         if($liqry === false) {
            echo mysqli_error($con);
         } else{
             $liqry->bind_param('i',$uid);
-            $liqry->bind_result($category_id,$name,$description,$active);
+            $liqry->bind_result($adminId,$email);
             if($liqry->execute()){
                 $liqry->store_result();
                 $liqry->fetch();
                 if($liqry->num_rows == '1'){
-                    echo '$category_id: ' . $category_id . '<br>';
+                    echo '$adminId: ' . $adminId . '<br>';
                     echo '<input type="hidden" name="uid" value="' . $adminId . '" />';
-                    echo '$email: ' . $email . '<br>';
+                      echo '$email: ' . $email . '<br>';
                 }
             }
         }

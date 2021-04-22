@@ -3,7 +3,7 @@
 // onderstaand bestand wordt ingeladen
 include('../core/header.php');
 include('../core/checklogin_admin.php');
-include('products-menu.php');
+include('category-menu.php');
 ?>
 
 <h1>Productenoverzicht</h1>
