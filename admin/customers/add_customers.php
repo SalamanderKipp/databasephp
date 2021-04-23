@@ -30,7 +30,7 @@ if (isset($_POST['submit']) && $_POST['submit'] != "") {
 
         $liqry->bind_param('sssssisssisi', $gender, $first_name, $middle_name, $last_name, $street, $house_number, $house_number_addon, $zip_code, $city, $phone, $emailadres, $newsletter_subscription);
         if ($liqry->execute()) {
-            echo "admin user met voornaam " . $first_name . " is toegevoegd.";
+            echo "Customer met de voornaam " . $first_name . " is toegevoegd.";
         }
     }
     $liqry->close();
