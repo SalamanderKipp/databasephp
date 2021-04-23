@@ -9,43 +9,35 @@ include('category-menu.php');
 <h1>Productenoverzicht</h1>
 
 <?php
-$liqry = $con->prepare("SELECT `product_id`, `p`.`name`, `p`.`description`, c.`name`, `price`, `color`, `weight`, `p`.`active` FROM `product` as `p`, `category` as `c` WHERE p.category_id = c.category_id");
+$liqry = $con->prepare("SELECT `category_id`, `name`, `description`, `active` FROM `category`");
 if ($liqry === false) {
     echo mysqli_error($con);
 } else {
-    $liqry->bind_result($product_id, $name, $description, $category, $price, $color, $weight, $active);
+    $liqry->bind_result($category_id, $name, $description, $active);
     if ($liqry->execute()) {
         $liqry->store_result();
         echo '<table border=1>
                         <tr>
-                            <td>Product id</td>
-                            <td>Product naam</td>
-                            <td>Product description</td>
-                            <td>Category</td>
-                            <td>Price</td>
-                            <td>Color</td>
-                            <td>Weight</td>
+                            <td>Category id</td>
+                            <td>Category naam</td>
+                            <td>Category description</td>
                             <td>Active</td>
                             <td>edit</td>
                             <td>delete</td>
                         </tr>';
         while ($liqry->fetch()) { ?>
             <tr>
-                <td><?php echo $product_id; ?></td>
+                <td><?php echo $category_id; ?></td>
                 <td><?php echo $name; ?></td>
                 <td><?php echo $description; ?></td>
-                <td><?php echo $category; ?></td>
-                <td><?php echo $price; ?></td>
-                <td><?php echo $color; ?></td>
-                <td><?php echo $weight; ?></td>
                 <?php $check = "checked";
                 if($active == 0) {
                     $check = "";
                 }
                 ?>
                 <td><input disabled="disabled" type="checkbox" <?php echo $check?> ><?php echo $active; ?></td>
-                <td><a href="edit_product.php?uid=<?php echo $product_id; ?>">edit</a></td>
-                <td><a href="delete_product.php?uid=<?php echo $product_id; ?>">delete</a></td>
+                <td><a href="edit_category.php?uid=<?php echo $category_id; ?>">edit</a></td>
+                <td><a href="delete_category.php?uid=<?php echo $category_id; ?>">delete</a></td>
             </tr>
             <?php
         }

@@ -6,7 +6,7 @@
     include('customers-menu.php');
 ?>
 
-<h1>Gebruiker verwijderen</h1>
+<h1>Customer verwijderen</h1>
 
 <?php
 //prettyDump($_POST);
@@ -14,7 +14,7 @@
         //default user: test@test.nl
         //default password: test123
         $uid = $con->real_escape_string($_POST['uid']);
-        $query1 = $con->prepare("DELETE FROM admin_user WHERE admin_user_id = ? LIMIT 1;");
+        $query1 = $con->prepare("DELETE FROM customer WHERE customer_id = ? LIMIT 1;");
         if ($query1 === false) {
             echo mysqli_error($con);
         }
@@ -23,7 +23,7 @@
         if ($query1->execute() === false) {
             echo mysqli_error($con);
         } else {
-            echo '<div style="border: 2px solid red">Gebruiker met admin_user_id '.$uid.' verwijderd!</div>';
+            echo '<div style="border: 2px solid red">Gebruiker met customer_id '.$uid.' verwijderd!</div>';
         }
         $query1->close();
                     
@@ -41,19 +41,30 @@
 
         $uid = $con->real_escape_string($_GET['uid']);
 
-        $liqry = $con->prepare("SELECT admin_user_id,email FROM admin_user WHERE admin_user_id = ? LIMIT 1;");
+        $liqry = $con->prepare("SELECT customer_id, gender, first_name, middle_name, last_name, street, house_number, house_number_addon, zip_code, city, phone, `e-mailadres`, newsletter_subscription FROM customer WHERE customer_id = ? LIMIT 1;");
         if($liqry === false) {
            echo mysqli_error($con);
         } else{
             $liqry->bind_param('i',$uid);
-            $liqry->bind_result($adminId,$email);
+            $liqry->bind_result($customer_id, $gender, $first_name, $middle_name, $last_name, $street, $house_number, $house_number_addon, $zip_code, $city, $phone, $emailadres, $newsletter_subscription);
             if($liqry->execute()){
                 $liqry->store_result();
                 $liqry->fetch();
                 if($liqry->num_rows == '1'){
-                    echo '$adminId: ' . $adminId . '<br>';
-                    echo '<input type="hidden" name="uid" value="' . $adminId . '" />';
-                      echo '$email: ' . $email . '<br>';
+                    echo 'customer_id: ' . $customer_id . '<br>';
+                    echo '<input type="hidden" name="uid" value="' . $customer_id . '" />';
+                    echo 'gender: ' . $gender . '<br>';
+                    echo 'first_name: ' . $first_name . '<br>';
+                    echo 'middle_name: ' . $middle_name . '<br>';
+                    echo 'last_name: ' . $last_name . '<br>';
+                    echo 'street: ' . $street . '<br>';
+                    echo 'house_number: ' . $house_number . '<br>';
+                    echo 'house_number_addon: ' . $house_number_addon . '<br>';
+                    echo 'zip_code: ' . $zip_code . '<br>';
+                    echo 'city: ' . $city . '<br>';
+                    echo 'phone: ' . $phone . '<br>';
+                    echo 'emailadres: ' . $emailadres . '<br>';
+                    echo 'newsletter_subscription: ' . $newsletter_subscription . '<br>';
                 }
             }
         }

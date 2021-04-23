@@ -48,8 +48,8 @@ if (isset($_POST['submit']) && $_POST['submit'] != '') {
                 $liqry->store_result();
                 $liqry->fetch();
                 if ($liqry->num_rows == '1') {
-                    echo '$adminId: <input type="text" name="uid" value="' . $adminId . '" readonly><br>';
-                    echo '$email: <input type="text" name="email" value="' . $email . '"><br>';
+                    echo 'adminId: <input type="text" name="uid" value="' . $adminId . '" readonly><br>';
+                    echo 'email: <input type="text" name="email" value="' . $email . '"><br>';
                 }
             }
         }

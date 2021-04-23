@@ -51,9 +51,11 @@
                 $liqry->store_result();
                 $liqry->fetch();
                 if($liqry->num_rows == '1'){
-                    echo '$category_id: ' . $category_id . '<br>';
-                    echo '<input type="hidden" name="uid" value="' . $adminId . '" />';
-                    echo '$email: ' . $email . '<br>';
+                    echo '<b>category_id:</b> ' . $category_id . '<br>';
+                    echo '<input type="hidden" name="uid" value="' . $category_id . '" />';
+                    echo '<b>name: </b>' . $name . '<br>';
+                    echo '<b>description:</b> ' . $description . '<br>';
+                    echo '<b>active:</b> ' . $active . '<br>';
                 }
             }
         }
