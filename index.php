@@ -15,15 +15,15 @@
 </head>
 
 <body>
-<?php
+    <?php
     include 'core/header.php';
     ?>
-<!-- where begindatum >= SYSDATE() order by begindatum asc -->
+    <!-- where begindatum >= SYSDATE() order by begindatum asc -->
     <?php
-    $webshopdetail = "SELECT * FROM product";
+    $webshopdetail = "SELECT * FROM product WHERE active = 1 ORDER BY RAND()";
     $result = $con->query($webshopdetail);
     ?>
-    
+
     <div class="container">
         <div class="card-group">
             <div class='row'>
@@ -42,42 +42,43 @@
                     //         $datum = $dateStart . " - " . $dateEnd;
                     //     }
 
-                        // The code here checks for how many days there are left until the events begins
-                        // and locks the card if there ar 2 days or less till the event
-                        // $begin = date_create($row['begindatum']);
-                        // $datelocal = new DateTime();
-                        // $dateclose = date_diff($begin, $datelocal);
-                        // $difftime = $dateclose->format('%d');
+                    // The code here checks for how many days there are left until the events begins
+                    // and locks the card if there ar 2 days or less till the event
+                    // $begin = date_create($row['begindatum']);
+                    // $datelocal = new DateTime();
+                    // $dateclose = date_diff($begin, $datelocal);
+                    // $difftime = $dateclose->format('%d');
 
-                        // Code changes the border color depending on the amount of tickets or time left
-                        // $tickets = $row['tickets'];
-                        // $totaltickets = $row['totaltickets'];
-                        // $carddanger = "cardgroen";
-                        // $locationonclick = "' onclick='location.href=\"detail.php?id=" . $row['id'] . "\"'";
-                        // $readmore = '';
-                        // $buttonColor = "success";
-                        // if ($tickets == 0 || $difftime <= 2) {
-                        //     $carddanger = "carddanger";
-                        //     $locationonclick = "";
-                        //     $buttonColor = "danger";
-                        //     $readmore = "readmore";
-                        // } else if ($tickets <= ($totaltickets * 0.1)) {
-                        //     $carddanger = "cardwarning";
-                        //     $buttonColor = "warning";
-                        // }
-                        // Maakt de tickets aan met de verschillende variablen wat in de database opgeslagen is
-                        echo
-                        "
+                    // Code changes the border color depending on the amount of tickets or time left
+                    // $tickets = $row['tickets'];
+                    // $totaltickets = $row['totaltickets'];
+                    // $carddanger = "cardgroen";
+                    $locationonclick = "' onclick='location.href=\"detail.php?id=" . $row['product_id'] . "\"'";
+                    // $readmore = '';
+                    // $buttonColor = "success";
+                    // if ($tickets == 0 || $difftime <= 2) {
+                    //     $carddanger = "carddanger";
+                    //     $locationonclick = "";
+                    //     $buttonColor = "danger";
+                    //     $readmore = "readmore";
+                    // } else if ($tickets <= ($totaltickets * 0.1)) {
+                    //     $carddanger = "cardwarning";
+                    //     $buttonColor = "warning";
+                    // }
+                    // Maakt de tickets aan met de verschillende variablen wat in de database opgeslagen is
+
+                    echo
+                    "
                         <div class='col-md-6 '>
                             <div class='mr-2'>
-                                <div class='card " . $name . " ' " . $name . ">
-                                    <img class='card-img-top' src=" . $row['imgevent'] . " alt='Card image cap'>
+                                <div class='card' " . $locationonclick . " >
+                                    <img class='card-img-top' src='assets/img/product.png' alt='Card image cap'>
                                     <div class='card-body'>
                                         <h5 class='text-center'>" . $row['name'] . "</h5>
-                                        <p class='card-text'><i class='fas fa-map-marker-alt'></i> " . $row['name'] . ' ' . $row['name'] . "<br><i class='fas fa-user'></i> " . $row['name'] . "<br> <i class='fas fa-calendar-alt'></i> " . $name . "</p>
+                                        <p class='card-text'><i class='fas fa-map-marker-alt'></i> " . $row['name'] . ' ' . $row['name'] . "<br><i class='fas fa-user'></i> " . $row['name'] . "<br> <i class='fas fa-calendar-alt'></i></p>
                                     </div>
                                     <div class='read-more-place'>
-                                        <button class='btn btn-outline-warning mb-2 mr-4 float-right'><b>Read More</b></button>
+                                        <button class='btn btn-outline-success mb-2 mr-4 float-right'><b>Read More</b></button>
                                     </div>
                                     <div class='card-footer'>
                                         <small class='text-muted float-right'>Tickets available " . $row['name'] . "</small>
@@ -85,7 +86,6 @@
                                 </div>
                             </div>
                         </div>";
-                    
                 }
                 ?>
             </div>

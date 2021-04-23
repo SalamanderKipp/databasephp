@@ -28,25 +28,7 @@
                     <a href="" type="button" class="btn btn-outline-warning mr-2">About</a>
                 </li>
             </ul>
-                <!-- checkt wat voor user je bent of ingelogt en laat nieuwe buttons zien -->
             <?php
-            // if (isset($_SESSION['userType'])) {
-            //     if ($_SESSION['userType'] == "admin") {
-            //         echo '<a href="admin.php" type="button" class="btn btn-outline-warning mr-2 mt-2">Admin</a><br>';
-            //         echo '<a type="button" href="myevents.php" class="btn btn-outline-warning mr-2 mt-2">My events</a><br>';
-            //         echo '<a href="createEvent.php" type="button" class="btn btn-outline-warning mr-2 mt-2">Create Event</a>';
-            //     }
-            //     if ($_SESSION['userType'] == "member") {
-            //         echo '<a type="button" href="myevents.php" class="btn btn-outline-warning mr-2 mt-2">My events</a><br>';
-            //         echo '<a type="button" href="createEvent.php" class="btn btn-outline-warning mr-2 mt-2">Create Event</a>';
-            //     }
-            //     echo  '<a type="button" href="logout.php" class="btn btn-outline-warning mr-2">Log out</a>';
-            
-            // } else {
-            //     echo '<a type="button" href="login.php" class="btn btn-outline-warning mr-2 mt-2">Login</a>
-            //     <br>
-            //         <a type="button" href="register.php" class="btn btn-outline-warning mr-2 mt-2">Register</a>';
-            // }
             ?>
         </div>
 </nav>
