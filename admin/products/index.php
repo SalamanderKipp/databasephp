@@ -39,17 +39,17 @@ if ($liqry === false) {
                 <td><?php echo $color; ?></td>
                 <td><?php echo $weight; ?></td>
                 <?php $check = "checked";
-                if($active == 0) {
+                if ($active == 0) {
                     $check = "";
                 }
                 ?>
-                <td><input disabled="disabled" type="checkbox" <?php echo $check?> ><?php echo $active; ?></td>
+                <td><input disabled="disabled" type="checkbox" <?php echo $check ?>><?php echo $active; ?></td>
                 <td><a href="edit_product.php?uid=<?php echo $product_id; ?>">edit</a></td>
                 <td><a href="delete_product.php?uid=<?php echo $product_id; ?>">delete</a></td>
             </tr>
-            <?php
+<?php
         }
-        
+
         echo '</table>';
     }
 

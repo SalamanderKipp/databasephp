@@ -18,79 +18,54 @@
     <?php
     include 'core/header.php';
     ?>
-    <!-- where begindatum >= SYSDATE() order by begindatum asc -->
-    <?php
-    $webshopdetail = "SELECT * FROM product WHERE active = 1 ORDER BY RAND()";
-    $result = $con->query($webshopdetail);
-    ?>
-
     <div class="container">
         <div class="card-group">
             <div class='row'>
                 <?php
+                $liqry = $con->prepare("SELECT product_id, `p`.`name`, `p`.`description`, c.`name`, `price`, `color`, `weight` FROM `product` as `p`, `category` as `c` WHERE p.category_id = c.category_id and p.active = 1 ORDER BY RAND()");
+                if ($liqry === false) {
+                    echo mysqli_error($con);
+                } else {
+                    $liqry->bind_result($id, $name, $description, $category, $price, $color, $weight);
+                    if ($liqry->execute()) {
+                        $liqry->store_result();
+                        while ($liqry->fetch()) { ?>
 
-                while ($row = mysqli_fetch_array($result)) {
-                    // Code checks if the event has an end date or not,
-                    // and puts it on the card in the right format
-                    // if ($result->num_rows > 0) {
-                    //     $dateStart = date_format(date_create($row['begindatum']), "d M H:i");
-                    //     $dateEnd = date_format(date_create($row['einddatum']), "d M H:i");
-                    //     $datum = "";
-                    //     if ($row['einddatum'] == '0000-00-00 00:00:00') {
-                    //         $datum = $dateStart;
-                    //     } else {
-                    //         $datum = $dateStart . " - " . $dateEnd;
-                    //     }
-
-                    // The code here checks for how many days there are left until the events begins
-                    // and locks the card if there ar 2 days or less till the event
-                    // $begin = date_create($row['begindatum']);
-                    // $datelocal = new DateTime();
-                    // $dateclose = date_diff($begin, $datelocal);
-                    // $difftime = $dateclose->format('%d');
-
-                    // Code changes the border color depending on the amount of tickets or time left
-                    // $tickets = $row['tickets'];
-                    // $totaltickets = $row['totaltickets'];
-                    // $carddanger = "cardgroen";
-                    $locationonclick = "' onclick='location.href=\"detail.php?id=" . $row['product_id'] . "\"'";
-                    // $readmore = '';
-                    // $buttonColor = "success";
-                    // if ($tickets == 0 || $difftime <= 2) {
-                    //     $carddanger = "carddanger";
-                    //     $locationonclick = "";
-                    //     $buttonColor = "danger";
-                    //     $readmore = "readmore";
-                    // } else if ($tickets <= ($totaltickets * 0.1)) {
-                    //     $carddanger = "cardwarning";
-                    //     $buttonColor = "warning";
-                    // }
-                    // Maakt de tickets aan met de verschillende variablen wat in de database opgeslagen is
-
-                    echo
-                    "
-                        <div class='col-md-6 '>
-                            <div class='mr-2'>
-                                <div class='card' " . $locationonclick . " >
-                                    <img class='card-img-top' src='assets/img/product.png' alt='Card image cap'>
-                                    <div class='card-body'>
-                                        <h5 class='text-center'>" . $row['name'] . "</h5>
-                                        <p class='card-text'><i class='fas fa-map-marker-alt'></i> " . $row['name'] . ' ' . $row['name'] . "<br><i class='fas fa-user'></i> " . $row['name'] . "<br> <i class='fas fa-calendar-alt'></i></p>
-                                    </div>
-                                    <div class='read-more-place'>
-                                        <button class='btn btn-outline-success mb-2 mr-4 float-right'><b>Read More</b></button>
-                                    </div>
-                                    <div class='card-footer'>
-                                        <small class='text-muted float-right'>Tickets available " . $row['name'] . "</small>
+                            <?php
+                            $locationonclick = "' onclick='location.href=\"detail.php?id=" . $id . "\"'";
+                            ?>
+                            <div class='col-md-3 '>
+                                <div class='mr-2'>
+                                    <div class='card' <?php echo $locationonclick  ?>>
+                                        <img class='card-img-top' src='assets/img/product.png' alt='Card image cap'>
+                                        <div class='card-body'>
+                                            <h5 class='text-center'><?php echo $name ?></h5>
+                                            <p class='card-text'><i class='fas fa-map-marker-alt'>Category: <?php echo $category?></i></p>
+                                            <p class='card-text'><i class='fas fa-map-marker-alt'>Prijs: <?php echo $price?>&euro;</i></p>
+                                        </div>
+                                        <div class='read-more-place'>
+                                            <button class='btn btn-outline-success mb-2 mr-4 float-right'><b>Go to details</b></button>
+                                        </div>
+                                        <div class='card-footer'>
+                                            <small class='text-muted float-right'>dit zijn producten xD</small>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>";
+
+                <?php
+                        }
+                    }
+
+                    $liqry->close();
                 }
+
                 ?>
             </div>
         </div>
     </div>
+
+
     <?php
     include 'core/footer.php';
     ?>

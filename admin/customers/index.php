@@ -50,7 +50,12 @@ if ($liqry === false) {
                 <td><?php echo $city; ?></td>
                 <td><?php echo $phone; ?></td>
                 <td><?php echo $emailadres; ?></td>
-                <td><?php echo $newsletter_subscription; ?></td>
+                <?php $check = "checked";
+                if ($newsletter_subscription == 0) {
+                    $check = "";
+                }
+                ?>
+                <td><input disabled="disabled" type="checkbox" <?php echo $check ?>><?php echo $newsletter_subscription; ?></td>
                 <td><a href="edit_customers.php?uid=<?php echo $customer_id; ?>">edit</a></td>
                 <td><a href="delete_customers.php?uid=<?php echo $customer_id; ?>">delete</a></td>
             </tr>
