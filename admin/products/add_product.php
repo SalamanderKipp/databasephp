@@ -16,7 +16,12 @@ if (isset($_POST['submit']) && $_POST['submit'] != "") {
     $price = $con->real_escape_string($_POST['price']);
     $color = $con->real_escape_string($_POST['color']);
     $weight = $con->real_escape_string($_POST['weight']);
-    $active = $con->real_escape_string($_POST['active']);
+
+    if (isset($_POST['active'])) {
+        $active = $con->real_escape_string($_POST['active']);
+    } else {
+        $active = 0; 
+    }
 
     $liqry = $con->prepare("INSERT INTO product (name, description, category_id, price, color, weight, active) VALUE (?, ?, ?, ?, ?, ?, ?)");
     if ($liqry === false) {
@@ -32,17 +37,51 @@ if (isset($_POST['submit']) && $_POST['submit'] != "") {
 ?>
 
 <form action="" method="POST">
-    name: <input type="text" name="name" value=""><br><br>
-    description: <input type="text" name="description" value=""><br><br>
-    category: <input type="text" name="category_id" value=""><br><br>
-    price: <input type="text" name="price" value=""><br><br>
-    color: <input type="text" name="color" value=""><br><br>
-    weight: <input type="text" name="weight" value=""><br><br>
-    active: <input type="text" name="active" value=""><br><br>
+    <?php
+
+    $liqry = $con->prepare("SELECT c.`name`, c.`category_id`, `p`.`active` FROM `product` as `p`, `category` as `c` WHERE `c`.`category_id`=`p`.`category_id` LIMIT 1;");
+    if ($liqry === false) {
+        echo mysqli_error($con);
+    } else {
+        $liqry->bind_result($category, $product_category_id, $active);
+
+        if ($liqry->execute()) {
+            $liqry->store_result();
+            $liqry->fetch();
+
+            if ($liqry->num_rows == '1') {
+                $columns = array('name', 'description', 'price', 'color', 'weight');
+                foreach ($columns as $key) {
+                    echo '<b>' . $key . '</b>: <input type="text" name="' . $key . '"><br>';
+                }
+                $categoryqry = $con->prepare("SELECT `category_id`, `name` FROM `category`;");
+                $categoryqry->bind_result($category_id, $name);
+
+                if ($categoryqry->execute()) {
+                    $categoryqry->store_result();
+
+                    echo '<b>catgory</b> :<select name="category_id" value="' . $product_category_id . '" required>';
+                    while ($categoryqry->fetch()) {
+                        // $selected = "";
+                        // if ($category_id == $product_category_id) {
+                        //     $selected = "selected";
+                        // }
+
+    ?>
+                        <option value="<?php echo $category_id; ?>"><?php echo $name; ?></option>
+    <?php
+                    }
+                    echo '</select> <br>';
+                    echo 'Active <input type="checkbox" name="active" value="1">';
+                }
+            }
+        }
+    }
+    $liqry->close();
+    ?>
+    <br>
     <input type="submit" name="submit" value="Toevoegen">
 </form>
-
-
 
 <?php
 include('../core/footer.php');

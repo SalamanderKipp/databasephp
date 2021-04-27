@@ -12,7 +12,12 @@ include('category-menu.php');
 if (isset($_POST['submit']) && $_POST['submit'] != "") {
     $name = $con->real_escape_string($_POST['name']);
     $description = $con->real_escape_string($_POST['description']);
-    $active = $con->real_escape_string($_POST['active']);
+
+    if (isset($_POST['active'])) {
+        $active = $con->real_escape_string($_POST['active']);
+    } else {
+        $active = 0; 
+    }
 
     $liqry = $con->prepare("INSERT INTO category (name, description, active) VALUE (?, ?, ?)");
     if ($liqry === false) {
@@ -28,9 +33,15 @@ if (isset($_POST['submit']) && $_POST['submit'] != "") {
 ?>
 
 <form action="" method="POST">
-    name: <input type="text" name="name" value=""><br><br>
-    description: <input type="text" name="description" value=""><br><br>
-    active: <input type="text" name="active" value=""><br><br>
+    <?php
+    $columns = array('name', 'description');
+    foreach ($columns as $key) {
+        echo '<b>' . $key . '</b>: <input type="text" name="' . $key . '" required><br>';
+    }
+    echo 'Active <input type="checkbox" name="active" value="1">';
+
+    ?>
+    <br>
     <input type="submit" name="submit" value="Toevoegen">
 </form>
 

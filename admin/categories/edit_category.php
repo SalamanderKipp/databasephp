@@ -17,7 +17,13 @@ if (isset($_POST['submit']) && $_POST['submit'] != '') {
     $id = $con->real_escape_string($_GET['uid']);
     $name = $con->real_escape_string($_POST['name']);
     $description = $con->real_escape_string($_POST['description']);
-    $active = $con->real_escape_string($_POST['active']);
+   
+    if (isset($_POST['active'])) {
+        $active = $con->real_escape_string($_POST['active']);
+    } else {
+        $active = 0; 
+    }
+    
     $query1 = $con->prepare("UPDATE category SET name = ?, description = ?, active = ? WHERE category_id = ? LIMIT 1;");
     if ($query1 === false) {
         echo mysqli_error($con);
@@ -53,34 +59,20 @@ if (isset($_POST['submit']) && $_POST['submit'] != '') {
                 $liqry->fetch();
                 
                 if ($liqry->num_rows == '1') {
-                    $columns = array('id', 'name', 'description', 'active');
+                    $columns = array('id', 'name', 'description');
                     foreach ($columns as $key) {
                         $dit_veld_moet_alleen_lezen_zijn = "";
                         if ($key == 'id') {
                             $dit_veld_moet_alleen_lezen_zijn = "disabled";
                         }
                         echo '<b>' . $key . '</b> :<input type="text" name="' . $key . '" value="' . $$key . '" ' . $dit_veld_moet_alleen_lezen_zijn . '><br>';
-                    }
-                    $categoryqry = $con->prepare("SELECT `category_id`, `name` FROM `category`;");
-                    $categoryqry->bind_result($category_id, $name);
-            
-                    if ($categoryqry->execute()) {
-                        $categoryqry->store_result();
+                    }             
 
-                        echo '<b>catgory</b> :<select name="category_id" value="' . $category_id . '">';
-                        while ($categoryqry->fetch()) {
-                            $selected = "";
-                            if ($category_id == $category_id) {
-                                $selected = "selected";
-                            }
-                            
-                            ?>
-                            <option value="<?php echo $category_id; ?>" <?php echo $selected ?>><?php echo $name; ?></option>
-                        <?php
-                        }
-                        echo '</select>';
+                    $checked = "";
+                    if ($active == '1') {
+                        $checked = "checked";
                     }
-                    
+                    echo 'Active <input type="checkbox" name="active" value="1" ' . $checked . '>';       
                 }
             }
         }

@@ -38,7 +38,11 @@ if (isset($_POST['submit']) && $_POST['submit'] != "") {
 ?>
 
 <form action="" method="POST">
-gender: <input type="text" name="gender" value=""><br><br>
+gender: <select name="gender" id="">
+<option value="Man"></option>
+<option value="Vrouw"></option>
+<option value="Transgender"></option>
+</select><br><br>
 first_name: <input type="text" name="first_name" value=""><br><br>
 middle_name: <input type="text" name="middle_name" value=""><br><br>
 last_name: <input type="text" name="last_name" value=""><br><br>
